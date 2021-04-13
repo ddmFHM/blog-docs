@@ -1,0 +1,45 @@
+# push至master分支后自动部署至阿里云服务器
+name: Build blog-docs and deploy to Aliyun ECS
+on:
+  #监听push操作
+  push:
+    branches:
+      # master分支
+      - master
+jobs:
+  build:
+    # runs-on 指定job任务运行所需要的虚拟机环境(必填字段)
+    runs-on: ubuntu-latest
+    steps:
+      # 获取源码
+      - name: Checkout
+        # 使用action库  actions/checkout获取源码
+        uses: actions/checkout@master
+      # 安装Node14.16.1
+      - name: use Node.js 14.16.1
+        # 使用action库  actions/setup-node安装node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.16.1
+      # 安装依赖
+      - name: npm install
+        run: npm install
+      # 打包生成dist文件
+      - name: npm build
+        run: npm run docs:build
+      # 部署到阿里云服务器
+      - name: Deploy to Aliyun
+        uses: easingthemes/ssh-deploy@v2.1.1
+        env:
+          # 私钥
+          SSH_PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+          # scp参数
+          ARGS: "-avzr --delete"
+          # 源目录
+          SOURCE: "./docs/.vuepress/dist"
+          # 服务器ip
+          REMOTE_HOST: ${{ secrets.HOST }}
+          # 用户
+          REMOTE_USER: ${{ secrets.USER }}
+          # 目标地址 
+          TARGET: ${{ secrets.TARGET }}
