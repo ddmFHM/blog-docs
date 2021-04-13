@@ -32,5 +32,17 @@ module.exports = {
         '函数'
       ]
     }
+  ],
+
+  '/面试/': [
+    {
+      title: '面试',   
+      collapsable: false, 
+      sidebarDepth: 1,
+      children: [
+        '',
+        'JS'
+      ]
+    }
   ]
 }

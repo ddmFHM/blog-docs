@@ -8,5 +8,6 @@ module.exports = [
       { text: 'JS', link: '/前端/JS/' }
     ]
   },
+  { text: '面试', link: '/面试/' },
   { text: '个人网站', link: 'https://www.ddmfhm.com' },
 ]
