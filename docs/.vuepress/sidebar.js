@@ -12,7 +12,7 @@ module.exports = {
 
   '/前端/CSS/': [
     {
-      title: 'CSS',   
+      title: 'CSS',  
       collapsable: false, 
       sidebarDepth: 2,
       children: [
@@ -25,10 +25,11 @@ module.exports = {
     {
       title: 'JS',   
       collapsable: false, 
-      sidebarDepth: 2,
+      sidebarDepth: 1,
       children: [
         '',
-        '数据类型'
+        '数据类型',
+        '函数'
       ]
     }
   ]
