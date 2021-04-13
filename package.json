@@ -1,0 +1,24 @@
+{
+  "name": "blog-docs",
+  "version": "1.0.0",
+  "description": "Technical accumulation documentation station",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ddmFHM/blog-docs.git"
+  },
+  "author": "ddmFHM",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ddmFHM/blog-docs/issues"
+  },
+  "homepage": "https://github.com/ddmFHM/blog-docs#readme",
+  "devDependencies": {
+    "vuepress": "^1.8.2"
+  }
+}
