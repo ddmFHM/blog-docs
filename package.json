@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/ddmFHM/blog-docs#readme",
   "devDependencies": {
+    "@vuepress/plugin-back-to-top": "^1.8.2",
     "vuepress": "^1.8.2",
     "vuepress-plugin-flexsearch": "^0.1.0"
   }
