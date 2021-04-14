@@ -34,6 +34,18 @@ module.exports = {
     }
   ],
 
+  '/前端/构建工具/': [
+    {
+      title: '构建工具',   
+      collapsable: false, 
+      sidebarDepth: 1,
+      children: [
+        '',
+        'webpack',
+      ]
+    }
+  ],
+
   '/面试/': [
     {
       title: '面试',   

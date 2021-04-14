@@ -1,10 +1,11 @@
 ---
 home: true
+lang: zh-CN
 heroImage: /logo.png
 heroText: ddmFHM
 tagline: 技术积累文档站
 actionText: Start
-actionLink: /zh/guide/
+actionLink: /前端/HTML/
 features:
 - title: 前端笔记
   details: 学习如春起之苗, 不见其增, 日有所长。

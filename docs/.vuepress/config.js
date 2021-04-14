@@ -14,7 +14,6 @@ module.exports = {
     smoothScroll: true,
     repo: 'ddmFHM/blog-docs',
     docsDir: 'docs',
-    repoLabel: '编辑此页',
     docsBranch: 'master',
     editLinks: true,
     editLinkText: 'Edit this page on GitHub'
