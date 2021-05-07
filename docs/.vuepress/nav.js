@@ -1,5 +1,4 @@
 module.exports = [
-  { text: '首页', link: '/' },
   { 
     text: '前端',
     items: [
@@ -7,6 +6,7 @@ module.exports = [
       { text: 'CSS', link: '/前端/CSS/' },
       { text: 'JS', link: '/前端/JS/' },
       { text: '构建工具', link: '/前端/构建工具/' },
+      { text: '模块化', link: '/前端/模块化/' },
     ]
   },
   { 

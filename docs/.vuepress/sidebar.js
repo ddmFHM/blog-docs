@@ -8,7 +8,7 @@ module.exports = {
       collapsable: false, 
       sidebarDepth: 2,
       children: [
-        'HTML5新特性'
+        '语义化标签'
       ]
     }
   ],
@@ -19,7 +19,13 @@ module.exports = {
       collapsable: false, 
       sidebarDepth: 2,
       children: [
-        'CSS选择器'
+        '',
+        '单位',
+        'CSS选择器',
+        '行级元素 & 块级元素',
+        '盒模型',
+        'BFC',
+        '性能问题'
       ]
     }
   ],
@@ -32,7 +38,23 @@ module.exports = {
       children: [
         '',
         '数据类型',
-        '函数'
+        '函数',
+        '异步处理',
+        '迭代器 & 生成器',
+        '集合类型'
+      ]
+    }
+  ],
+
+  '/前端/模块化/': [
+    {
+      title: '模块化',   
+      collapsable: false, 
+      sidebarDepth: 1,
+      children: [
+        '',
+        'CommonJs',
+        'ES6模块化'
       ]
     }
   ],
