@@ -1,4 +1,7 @@
 module.exports = {
+
+  /* 前端部分 start */
+
   '/前端/HTML/': [
     {
       title: 'HTML',   
@@ -45,6 +48,32 @@ module.exports = {
       ]
     }
   ],
+
+  /* 前端部分 end */
+
+  /* 技术部分 start */
+  
+  '/技术/': [
+    {
+      title: '前端技术',   
+      collapsable: false, 
+      sidebarDepth: 1,
+      children: [
+        ''
+      ]
+    },
+    {
+      title: '后端技术', 
+      collapsable: false, 
+      sidebarDepth: 1,
+      children: [
+        '后端/',
+        '后端/JWT'
+      ]
+    }
+  ],
+
+   /* 技术部分 end */
 
   '/面试/': [
     {

@@ -9,6 +9,10 @@ module.exports = [
       { text: '构建工具', link: '/前端/构建工具/' },
     ]
   },
+  { 
+    text: '技术',
+    link: '/技术/'
+  },
   { text: '面试', link: '/面试/' },
   { text: '个人网站', link: 'https://www.ddmfhm.com' },
 ]
