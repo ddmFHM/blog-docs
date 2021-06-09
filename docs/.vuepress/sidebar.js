@@ -37,6 +37,7 @@ module.exports = {
       sidebarDepth: 1,
       children: [
         '',
+        '变量',
         '数据类型',
         '函数',
         '异步处理',
