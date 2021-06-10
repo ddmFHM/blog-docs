@@ -5,10 +5,10 @@ module.exports = {
   '/前端/HTML/': [
     {
       title: 'HTML',   
-      collapsable: false, 
+      collapsable: true, 
       sidebarDepth: 2,
       children: [
-        '语义化标签'
+        '标签'
       ]
     }
   ],
@@ -42,16 +42,39 @@ module.exports = {
         '函数',
         '异步处理',
         '迭代器 & 生成器',
-        '集合类型'
+        '集合类型',
+        'DOM',
+        '内存'
       ]
     }
+  ],
+
+  '/前端/框架/': [
+    {
+      title: 'Vue',   
+      collapsable: false, 
+      sidebarDepth: 1,
+      children: [
+        '',
+        'Vue'
+      ]
+    },
+    {
+      title: 'React',   
+      collapsable: false, 
+      sidebarDepth: 1,
+      children: [
+        '',
+        'Vue'
+      ]
+    },
   ],
 
   '/前端/模块化/': [
     {
       title: '模块化',   
       collapsable: false, 
-      sidebarDepth: 1,
+      sidebarDepth: 2,
       children: [
         '',
         'CommonJs',
@@ -73,6 +96,25 @@ module.exports = {
   ],
 
   /* 前端部分 end */
+
+  /* 网络部分 start */
+
+  '/网络/': [
+    {
+      title: '网络',   
+      collapsable: true, 
+      sidebarDepth: 2,
+      children: [
+        '',
+        '跨域',
+        'HTTP请求',
+        'HTTP缓存',
+        'TCP'
+      ]
+    }
+  ],
+
+  /* 网络部分 end */
 
   /* 技术部分 start */
   
