@@ -12,6 +12,7 @@ module.exports = [
   },
   { text: '技术', link: '/技术/' },
   { text: '网络', link: '/网络/' },
+  { text: '算法', link: '/算法/' },
   { text: '面试', link: '/面试/' },
   { text: '个人网站', link: 'https://www.ddmfhm.com' },
 ]

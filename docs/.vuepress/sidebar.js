@@ -22,7 +22,7 @@ module.exports = {
         '',
         '单位',
         'CSS选择器',
-        '行级元素 & 块级元素',
+        '行级元素与块级元素',
         '盒模型',
         'BFC',
         '性能问题'
@@ -44,7 +44,8 @@ module.exports = {
         '迭代器 & 生成器',
         '集合类型',
         'DOM',
-        '内存'
+        '内存',
+        '浏览器缓存'
       ]
     }
   ],
@@ -55,19 +56,21 @@ module.exports = {
       collapsable: false, 
       sidebarDepth: 1,
       children: [
-        '',
-        'Vue'
+        'Vue',
+        'Vue-router',
+        'Vuex',
+        'Vuepress'
       ]
     },
-    {
-      title: 'React',   
-      collapsable: false, 
-      sidebarDepth: 1,
-      children: [
-        '',
-        'Vue'
-      ]
-    },
+    // {
+    //   title: 'React',   
+    //   collapsable: false, 
+    //   sidebarDepth: 1,
+    //   children: [
+    //     '',
+    //     'Vue'
+    //   ]
+    // },
   ],
 
   '/前端/模块化/': [
@@ -138,7 +141,23 @@ module.exports = {
     }
   ],
 
-   /* 技术部分 end */
+  /* 技术部分 end */
+
+  /* 算法部分 start */
+  '/算法/': [
+    {
+      title: '算法',   
+      collapsable: false, 
+      sidebarDepth: 2,
+      children: [
+        '',
+        '排序算法'
+      ]
+    }
+  ],
+  /* 算法部分 end */
+
+  /* 面试部分 start */
 
   '/面试/': [
     {
@@ -151,4 +170,6 @@ module.exports = {
       ]
     }
   ]
+
+  /* 面试部分 end */
 }
