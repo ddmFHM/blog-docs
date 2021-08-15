@@ -1,5 +1,5 @@
 module.exports = {
-  title: 'ddmFHM',
+  title: '遇事不决 可问春风',
   description: `ddmFHM's technical documentation station`,
   head: [
     ['link', { rel: 'icon', href: '/favicon.ico' }],
