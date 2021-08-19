@@ -2,7 +2,7 @@
 
 ## Vue 生命周期
 
-<img src="/lifecycle.png" width="80%">
+<img src="/前端/框架/Vue/lifecycle.png" width="80%">
 
 1. 生成vue实例
 

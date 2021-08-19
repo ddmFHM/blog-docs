@@ -12,7 +12,7 @@
 
 下图表示同一个页面不同的渲染方式带来的体验效果
 
-![SSR与CSR](/CSR-SSR.jpeg)
+![SSR与CSR](/前端/框架/React/CSR-SSR.jpeg)
 
 - 客户端渲染
   

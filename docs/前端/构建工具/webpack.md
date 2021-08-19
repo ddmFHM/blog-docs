@@ -60,7 +60,7 @@
     ./src/utils.js  | xxxxx
     ./src/request.js  | xxxxx
 
-![webpack 编译过程](/webpack过程.png)
+![webpack 编译过程](/前端/构建工具/webpack过程.png)
 
 ### 3. 打包结果
 
