@@ -10,7 +10,7 @@ module.exports = {
     search: true,
     nav: require('./nav'),
     sidebar: require('./sidebar'),
-    lastUpdated: '🎈 Last update',
+    lastUpdated: '📂 Last update',
     smoothScroll: true,
     repo: 'ddmFHM/blog-docs',
     docsDir: 'docs',
