@@ -1,4 +1,5 @@
-module.exports = [{
+module.exports = [
+  {
     text: '前端',
     items: [{
         text: '基础',
@@ -85,6 +86,7 @@ module.exports = [{
     text: '面试',
     link: '/面试/'
   },
+
   {
     text: '个人网站',
     link: 'https://www.ddmfhm.com'

@@ -1,14 +1,90 @@
 # Hooks
 
+理念：践行代数效应
+
+
+
 ## useState
 
-State Hooks 是一个在函数组件中使用的函数（useState）用于在函数组件中使用状态
+State Hooks 能让函数组件同类组件一样拥有自己的状态。
 
-useState 有一个参数，这个参数表示状态的默认值
+```jsx
+const [count, setCount] = useState(0)
+console.log(count) // 0
+setState(1)
+console.log(count) // 1
+```
 
-返回一个数组
-- 第一项：状态的值
-- 第二项：改变状态值的函数
+- useState可以传入一个参数，这个参数就是状态的**默认值**
+
+- 调用useState后会返回一个数组数组包含两项，通常使用ES6解构的方式获取数组的两个值
+  
+  - 第一项：useState存储的状态数据
+
+  - 第二项：更新数据的方法（更新state变量会替换而不是合并
+    
+
+- 更新数据的方法有两种调用形式
+
+  - 第一种：直接传入需要更新的数据
+    ```jsx
+      setCount(count + 1)
+    ```
+  
+  - 第二种：传入一个函数，返回值为更新的数据，函数参数为当前数据
+    ```jsx
+      setCount((preCount) => {
+        console.log(preCount) // 当前的count值
+        return preCount + 1
+      })
+    ```
+
+  - 两者的区别在于异步函数中调用 更新数据方法是否会合并优化，举个例子
+
+    ```jsx
+      export default function Count() {
+        const [count, setCount] = useState(0)
+        return (
+          <div>
+            // 数据
+            <p>{count}</p>
+            // 在异步事件中 使用传入数据进行更新
+            <button onClick={() => { setTimeout(() => {
+              setCount(count + 1)
+              setCount(count + 1)
+            }, 2000); }}>同步加</button>
+            // 在异步事件中 使用传入函数进行更新
+            <button onClick={() => { setTimeout(() => {
+              setCount((pre) => { return pre + 1 })
+              setCount((pre) => { return pre + 1 })
+            }, 2000); }}>异步加</button>
+
+          </div>
+        )
+      }
+    ```
+  
+    - 页面提供了两个按钮，当按钮点击后两秒会进行两次数据加1操作。
+
+      - 如果使用传入数据进行更新，两秒后数据会加1、而不是加2。
+
+        - 因为React为了优化性能、会将多次`setCount`更新函数合并到最近一次更新数据。
+        - 相当于是一个闭包，setCount 函数会延迟到最近一次React更新数据时进行调用
+        - 此时每次拿到的count都是还未改变的count
+        - ```js
+            <button onClick={() => { setTimeout(() => {
+              setCount(count + 1) // 此时的count未改变值为1 等同于 setCount(1 + 1)
+              setCount(count + 1) // 此时的count也为改变 等同于 setCount(1 + 1)
+            }, 2000); }}>同步加</button>
+          ```
+
+      - 如果使用传入函数进行更新，两秒后数据会加2。
+
+        - 当传入的是一个回调函数时，setState虽然合并了，但是每次拿到的是一个回调函数
+        - 函数的参数为已经修改的数据，每次修改完数据都会将新的数据传递到下一个 setCount 的回调函数中
+        - 所以点击时数据会加2
+
+
 
 第N次调用useState
 检查该节点的状态数组是否存在下标N
