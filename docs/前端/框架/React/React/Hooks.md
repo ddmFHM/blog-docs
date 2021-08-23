@@ -2,8 +2,6 @@
 
 理念：践行代数效应
 
-
-
 ## useState
 
 State Hooks 能让函数组件同类组件一样拥有自己的状态。
@@ -188,3 +186,132 @@ useEffect
 ## useRef
 
 能产生一个具有唯一地址的对象
+
+## 模拟实现 Hooks
+
+```js
+let isMount = true; // true 是挂载阶段 false 非挂载阶段（即为更新阶段）
+let workInProgressHook = null; // 指针、指向当前内存中正在执行的hook
+const fiber = {
+  // 指向当前fiber对应的节点
+  stateNode: App,
+  memoizedState: null
+}
+
+/**
+ * 调度器
+ * 调度任务
+ */
+const schedule = function () {
+  // 调度的时候 将指针指向当前fiber节点
+  workInProgressHook = fiber.memoizedState
+  // 运行当前fiber对应组件
+  const app = fiber.stateNode()
+  // 调用过后就等于已经挂载了
+  isMount = false
+  return app
+}
+
+/**
+ * useState
+ * @param {any} initialState 
+ */
+const useState = function(initialState) {
+  // 标记当前处理的是哪个hook
+  let hook;
+  // 判断是否为第一次渲染
+  if (isMount) {
+    // 初次渲染的时候肯定是没有hook的
+    // 创建一个新的hook
+    // - memoizedState: 用于保存 hook的数据 （第一次渲染使用默认数据）
+    // - next: 当前组件可能多次调用hooks每个hook是通过链表进行链接保存的，此处next指向下一个hook（首次渲染的时候为null）
+    // - queue：环状链表，保存当前hook需要执行的更新函数（可能有多个，所以是一个环状链表）
+    hook = {
+      memoizedState: initialState,
+      next: null,
+      queue: {
+        pending: null
+      }
+    }
+
+    if (!fiber.memoizedState) {
+      // 如果fiber节点上没有memoizedState
+      // 则当前创建的是该组件的第一个hook
+      fiber.memoizedState = hook
+    } else {
+      // 如果fiber节点上存在memoizedState
+      // 此时就把新创建的hook链接在workInProgressHook的后面
+      // 因为如果已经存在memoizedState则，当前正在执行的hook指针（workInProgressHook）已经存在指向了
+      workInProgressHook.next = hook
+    }
+    // 创建处理完后、将当前正在执行的hook指针指向当前创建的hook
+    workInProgressHook = hook
+  } else {
+    // 如果是第二次渲染
+    // 拿到当前指向的hook（现在要开始处理这个hook了）
+    hook = workInProgressHook
+    // 将指针指向下一个hook（因为当前hook已经要执行了，等此次调度完毕后，当前正在执行的指针就应该是指向下一个hook的）
+    workInProgressHook.next = workInProgressHook
+  }
+
+  // 开始处理hook
+  // 1. 先拿到hook上的数据
+  let baseState = hook.memoizedState
+  if (hook.queue.pending) {
+    // 如果存在 需要执行的更新函数队列
+    let firstUpdate = hook.queue.pending
+    do {
+      baseState = firstUpdate.action(baseState)
+      firstUpdate = firstUpdate.next
+    } while (firstUpdate != hook.queue.pending.next)
+
+    hook.queue.pending = null
+  }
+
+  // 执行完后baseState更新了，需要重新设置一下
+  hook.memoizedState = baseState
+  return [
+    baseState,
+    dispatchAction.bind(null, hook.queue)
+  ]
+}
+
+/**
+ * 处理更新函数
+ * @param {*} action 
+ */
+const dispatchAction = function(queue, action) {
+  // update是一个数据结构
+  // - action: 更新函数接受的参数
+  // - next: 下一个更新的数据（环状链表）
+  let update = {
+    action,
+    next: null
+  }
+
+  if (queue.pending == null) {
+    update.next = update
+  } else {
+    update.next = queue.pending.next
+    queue.pending.next = update
+  }
+  // 让当前处理队列指向update
+  queue.pending = update
+  // 触发依次更新
+  schedule()
+}
+
+function App() {
+
+  const [num, setNum] = useState(0)
+  console.log(isMount)
+  console.log(num)
+  return {
+    onClick() {
+      setNum(preNum => preNum + 1)
+    }
+  }
+}
+
+window.app = schedule()
+```
