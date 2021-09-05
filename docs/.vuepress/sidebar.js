@@ -68,10 +68,11 @@ module.exports = {
 
   '/前端/框架/React/': [{
       title: 'React',
-      collapsable: true,
-      sidebarDepth: 1,
+      collapsable: false,
+      sidebarDepth: 2,
       children: [
         'React/',
+        'React/Reconciler',
         'React/Hooks'
       ]
     },
@@ -209,6 +210,9 @@ module.exports = {
         '链表/92.反转链表',
         '链表/25.K个一组反转链表',
         '链表/234.回文链表',
+        '链表/2.两数相加',
+        '链表/19.删除链表的倒数第N个节点',
+        '链表/21.合并两个有序链表',
       ]
     },{
       title: '动态规划',

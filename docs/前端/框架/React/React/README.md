@@ -1,42 +1,59 @@
 # React
 
-## 理念
-
-React 是用 JavaScript 构建快速响应的大型 Web 应用程序的方式
-
 ## React 架构
 
-### V16之前的架构
+V15 之前的版本使用的是 `stack Reconciler` 架构   
 
-- React15的架构分为两层
+v16 以后的版本使用的是 **`Fiber Reconciler`** 架构
 
-  1. Reconciler
-  2. Renderer
+> [Fiber 从 React 16 开始变成了默认的 reconciler。](https://zh-hans.reactjs.org/docs/codebase-overview.html#fiber-reconciler)
 
-#### Reconciler
+### Stack Reconciler
 
-  > 协调器，负责找出变化的组件
+V15 中当有更新发生时，采用递归对比虚拟 `DOM` 节点，找出所**需要变化**的节点，然后进行**同步**更新。即进行 `Reconciler`。
 
-  在React15架构可以通过`this.setState`, `this.forceUpdate`, `ReactDOM.render`等API触发更新
+对于 `Stack Reconciler` 可以简化为以下步骤
 
-  组件更新是，Reconciler协调器会进行以下操作
-  - 调用函数组件/类组件的`render`方法，将返回的`JSX`转化为虚拟DOM
-  - 将虚拟DOM和上次更新时的虚拟DOM对比
-  - 找出本地变化中需要更新的虚拟DOM
-  - 通知`Renderer`将变化的虚拟DOM渲染到页面上
+  1. 获取元素内容
 
-#### Renderer
+     - 类组件：`new` 出类的实例后 调用生命周期的 `componentWillMount` 后，调用 `render` 函数获取返回的 JSX
+     - 函数组件：直接调用函数组件获取 `return` 返回的 JSX
 
-> 渲染器，负责将变化的组件渲染到页面    
-> React 支持跨平台，所以有多种Render
+  2. 将 JSX 转换为 虚拟 DOM
 
-  - `ReactDOM`
-  - `ReactNative`
-  - `ReactTest`
-  - `ReactArt`
+  3. 递归对比虚拟 DOM 树 🌲，找出 **需要变化** 的节点
 
-在每次更新发生时，Renderer接到Reconciler通知，将变化的组件渲染在当前**宿主环境**
+  4. 通知 `Renderer` 将将变化的虚拟 DOM 进行同步更新，渲染到页面上
 
+
+由于 `Reconciler`的对比虚拟DOM 是<font color="#f40">递归</font>的。当组件嵌套层次很深时候，递归所产生的执行栈会越来越深，且递归<font color="#f40">不能被中断</font>。如果递归花的时间很长，超过了浏览器一帧的执行时间，就会造成卡顿的感觉，且递归执行的时间越长卡顿现象越明显。
+
+::: tip 宿主元素
+对于宿主元素(`<div/>`、`<p></p>`等内置的元素) 和 组合元素(`<App />`, `<Button />`等) 处理方式不同
+:::
+
+
+##### 卡顿现象的原因
+
+常见的显示器的刷新率一般为60Hz，也就是16.6ms左右会刷新一次。而浏览器的渲染帧是与设备刷新率一致的。   
+
+一帧的时间内要依次完成 JS执行、样式计算布局、样式绘制。（GUI线程与JS线程不能同时工作)。    
+
+所以当一帧内JS时间过长、就会减少后面两步的执行时间，如果执行JS时间大于1帧的时间，那么这一帧就不会进行样式的操作，用户就不能看到页面的更新，就会产生卡顿的感觉。
+
+<!-- 通常会产生卡顿感的页面都是有用户交互的，而用户交互就会触发JS事件
+
+对于有页面重排重绘、JS计算、JS事件、CSS动画等逻辑处理的情况，浏览器会启用渲染主线程 -->
+
+<!-- 一个主线程依次可以分为以下几个阶段：
+
+- 处理用户输入/设定的操作
+- 处理定时器，检测是否到达时间（执行对应的回调）
+- 处理开始帧（Begin Frame）即每一帧的事件（例如，`window.resize`, `scroll` ...）
+- 处理 `requestAnimationFrame`
+- 处理 `Layout` 操作（解析DOM树、CSSOM树、生成渲染树等...）
+- 进行 `Paint` 计算层级、获取节点尺寸位置信息等
+- 当以上处理完后，一帧时间还有空闲阶段 -->
 #### 缺点
 
 在`Reconciler`中，`mount`的组件会调用`mountComponent`，`update`的组件会调用`updateComponent`。这两个方法都会递归更新子组件。
@@ -50,55 +67,32 @@ React 是用 JavaScript 构建快速响应的大型 Web 应用程序的方式
 
 但是由于递归执行比较，一旦开始就无法中止，如果递归比较的层级很深，更新时间超过16ms，超过16ms则一帧都在执行JS，并不会更新样式页面，所以用户就会感觉到卡顿。
 
-所以V16后提出了一种新的解决办法。用可中断的**异步更新**代替~~同步的更新~~（时间切片）
+所以V16后提出了一种新的解决办法。用可中断的**异步更新**（时间切片）代替~~同步的更新~~
 
 即在浏览器每一帧的时间中，预留一些时间给JS线程，React利用这部分时间更新组件（在源码中，预留的初始时间是5ms）。
 
 当预留的时间不够用时，React将线程控制权交还给浏览器使其有时间渲染UI，React则等待下一帧时间到来继续被中断的工作。
 
-### V16后新的React架构
+### Scheduler
 
-新的React架构分为三层
+如何实现 可中断的异步更新
 
-- Scheduler: 调度器,调度任务的优先级，高优任务优先进入Reconciler
+浏览器端提供了一个 `requestIdleCallback` 方法，当浏览器进行一帧渲染时，如果执行完 JS代码、样式布局、绘制等操作后该帧还有剩余时间，则会调用该函数传入的回调函数。
 
-- Reconciler: 协调器
+因此如果要使得页面不会因为长时间执行 JS 代码而卡顿，适合的方案就是在浏览器每帧的剩余时间内进行 React 代码执行。
 
-- Renderer: 渲染器
+`requestIdleCallback`能在渲染帧的剩余时间执行回调，但是由于 issue 内回答的原因并没有使用该 API
 
-相较于之前的架构，新的架构分为三层，多了一层 schedule 调度器
+[Polyfill requestIdleCallback when native is not available ](https://github.com/facebook/react/pull/8833)
 
-### Schedule
+### Fiber Reconciler
 
-在空闲时触发回调的功能外，Scheduler还提供了多种调度优先级供任务设置。
+`React` 在 V16 后重构了核心算法，引入了 `Fiber` 架构
 
-#### Reconciler
-
-React15中Reconciler是以递归处理虚拟DOM
-
-React16中Reconciler
-```js
-function workLoopConcurrent() {
-  // Perform work until Scheduler asks us to yield
-  while (workInProgress !== null && !shouldYield()) {
-    performUnitOfWork(workInProgress);
-  }
-}
-```
-React16中的比较中添加了一个判断 `shouldYield` 来判断是否还有剩余时间
-
-在React16中，Reconciler与Renderer不再是交替工作。当Scheduler将任务交给Reconciler后，Reconciler会为变化的虚拟DOM打上代表增/删/更新的标记。例如
-
-```js
-export const Placement = /*             */ 0b0000000000010;
-export const Update = /*                */ 0b0000000000100;
-export const PlacementAndUpdate = /*    */ 0b0000000000110;
-export const Deletion = /*              */ 0b0000000001000;
-```
-
-整个Scheduler与Reconciler的工作都在内存中进行。只有当所有组件都完成Reconciler的工作，才会统一交给Renderer。
-
-#### Renderer
-
-Renderer根据Reconciler为虚拟DOM打的标记，同步执行对应的DOM操作。
-
+`Fiber` 架构的目标：
+  
+  - 能够把可中断的任务切片处理。
+  - 能够调整优先级，重置并复用任务。
+  - 能够在父元素与子元素之间交错处理，以支持 React 中的布局。
+  - 能够在 render() 中返回多个元素。
+  - 更好地支持错误边界。
