@@ -68,12 +68,12 @@ module.exports = {
 
   '/前端/框架/React/': [{
       title: 'React',
-      collapsable: false,
-      sidebarDepth: 2,
+      collapsable: true,
+      sidebarDepth: 1,
       children: [
         'React/',
         'React/Reconciler',
-        'React/Hooks'
+        'React/Hook'
       ]
     },
     {

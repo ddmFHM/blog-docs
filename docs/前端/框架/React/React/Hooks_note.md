@@ -1,7 +1,5 @@
 # Hooks
 
-理念：践行代数效应
-
 ## useState
 
 State Hooks 能让函数组件同类组件一样拥有自己的状态。
