@@ -67,6 +67,17 @@ module.exports = [
   },
 
   {
+    text: '语言',
+    items: [{
+      text: 'Rust',
+      items: [{
+        text: 'Rust',
+        link: '/语言/Rust/Rust基础/'
+      }]
+    }]
+  },
+
+  {
     text: '基础',
     items: [{
       text: '内功基础',

@@ -177,6 +177,21 @@ module.exports = {
 
   /* 全栈部分 end */
 
+  /* 语言部分 start */
+
+  '/语言/Rust/': [
+    {
+      title: 'Rust',
+      collapsable: true,
+      sidebarDepth: 1,
+      children: [
+        'Rust/'
+      ]
+    }
+  ],
+
+  /* 语言部分 end */
+
   /* 基础部分 start */
 
   '/基础/设计模式/': [{
